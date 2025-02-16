@@ -1,1 +1,4 @@
 gspread
+oauth2client
+streamlit
+pandas
