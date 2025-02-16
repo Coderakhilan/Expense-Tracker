@@ -4,8 +4,8 @@ from oauth2client.service_account import ServiceAccountCredentials
 import pandas as pd
 
 # Google Sheets Setup
-SHEET_URL = ""
-CREDENTIALS_FILE = ""
+SHEET_URL = st.secrets["gcp_service_account"]["sheet_url"]
+CREDENTIALS_FILE = st.secrets["gcp_service_account"]
 
 # Google Sheets API Setup
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/spreadsheets", 
