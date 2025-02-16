@@ -20,6 +20,8 @@ scope = [
     "https://www.googleapis.com/auth/cloud-platform"
 ]
 
+creds = creds.with_scopes(scopes=scope)
+
 # Authenticate and connect to Google Sheets
 client = gspread.authorize(creds)
 sheet = client.open_by_url(SHEET_URL).sheet1
