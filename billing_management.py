@@ -44,7 +44,7 @@ else:
 # **Admin Login**
 st.sidebar.header("🔑 Admin Login")
 password = st.sidebar.text_input("Enter Admin Password", type="password")
-ADMIN_PASSWORD = "123" 
+ADMIN_PASSWORD = st.secrets["gcp_service_account"]["pwd"]
 
 if password == ADMIN_PASSWORD:
     st.sidebar.success("✅ Admin Mode Activated!")
