@@ -1,16 +1,25 @@
 import streamlit as st
 import gspread
-from oauth2client.service_account import ServiceAccountCredentials
+from google.oauth2.service_account import Credentials
 import pandas as pd
 
 # Google Sheets Setup
 SHEET_URL = st.secrets["gcp_service_account"]["sheet_url"]
-CREDENTIALS_FILE = st.secrets["gcp_service_account"]
+
+# Load credentials from Streamlit secrets
+creds = None
+if "gcp_service_account" in st.secrets:
+    creds = Credentials.from_service_account_info(st.secrets["gcp_service_account"])
 
 # Google Sheets API Setup
-scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/spreadsheets", 
-         "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive"]
-creds = ServiceAccountCredentials.from_json_keyfile_name(CREDENTIALS_FILE, scope)
+scope = [
+    "https://spreadsheets.google.com/feeds", 
+    "https://www.googleapis.com/auth/spreadsheets", 
+    "https://www.googleapis.com/auth/drive.file", 
+    "https://www.googleapis.com/auth/drive"
+]
+
+# Authenticate and connect to Google Sheets
 client = gspread.authorize(creds)
 sheet = client.open_by_url(SHEET_URL).sheet1
 
