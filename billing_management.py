@@ -2,6 +2,7 @@ import streamlit as st
 import gspread
 from google.oauth2.service_account import Credentials
 import pandas as pd
+from datetime import datetime
 
 SHEET_URL = st.secrets["gcp_service_account"]["sheet_url"]
 
@@ -55,7 +56,8 @@ if password == ADMIN_PASSWORD:
 
     if st.button("Log Expense"):
         if name and amount > 0 and paid_by:
-            sheet.append_row([name, amount, paid_by])
+            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            sheet.append_row([name, amount, paid_by, timestamp])
             st.success("Expense Logged Successfully!")
             st.rerun()
 
