@@ -60,6 +60,7 @@ if not df.empty:
         intensity = i / len(debt_summary_sorted)
         color = f'rgb({255}, {192-intensity*192}, {203-intensity*203})'
         colors.append(color)
+    colors.reverse()
     
     fig = px.pie(
         debt_summary_sorted,
