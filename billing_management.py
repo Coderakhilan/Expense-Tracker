@@ -38,12 +38,25 @@ else:
 st.header("📊 Current Debt Summary")
 
 if not df.empty:
-    debt_summary = df.groupby("Name")["Amount Spent"].sum().reset_index()
-    debt_summary = debt_summary.sort_values("Amount Spent", ascending=False)
+    # Create a pivot table to show debts by both debtor and who they owe
+    debt_summary = df.pivot_table(
+        values='Amount Spent',
+        index='Name',
+        columns='Who Paid',
+        aggfunc='sum',
+        fill_value=0
+    ).reset_index()
+    
+    # Add total column
+    debt_summary['Total'] = debt_summary.iloc[:, 1:].sum(axis=1)
+    
+    # Sort by total
+    debt_summary = debt_summary.sort_values('Total', ascending=False)
+    
     st.write(debt_summary)
     
     highest_debtor = debt_summary.iloc[0]["Name"]
-    highest_amount = debt_summary.iloc[0]["Amount Spent"]
+    highest_amount = debt_summary.iloc[0]["Total"]
     
     debt_messages = [
         f"Congratulations, {highest_debtor}! You've won the 'Best at Owing Money' award! Now, pay up before we start charging rent on your debt!",
