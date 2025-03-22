@@ -42,7 +42,7 @@ if not df.empty:
     debt_summary = df.pivot_table(
         values='Amount Spent',
         index='Name',
-        columns='Who Paid',
+        columns='Paid By',
         aggfunc='sum',
         fill_value=0
     ).reset_index()
