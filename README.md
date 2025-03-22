@@ -38,6 +38,7 @@ Users can log expenses by entering
 - ```google-auth-httplib2```
 - ```oauth2client```
 - ```pandas```
+- ```plotly```
 - The app connects to *Google Sheets* via a service account and requires cloud credentials which is stored in streamlit's secrets.toml
 
 # Troubleshooting
