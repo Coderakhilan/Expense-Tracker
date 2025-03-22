@@ -48,12 +48,12 @@ if not df.empty:
     ).reset_index()
     
     debt_summary['Total'] = debt_summary.iloc[:, 1:].sum(axis=1)
+    debt_summary = debt_summary.sort_values('Total', ascending=False)
+    debt_summary_sorted = debt_summary.sort_values('Total', ascending=True)
     
     st.write(debt_summary)
     
     st.markdown("### 📈 Debt Distribution")
-    
-    debt_summary_sorted = debt_summary.sort_values('Total', ascending=True)
     
     colors = []
     for i in range(len(debt_summary_sorted)):
