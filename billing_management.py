@@ -38,6 +38,7 @@ st.header("📊 Current Debt Summary")
 
 if not df.empty:
     debt_summary = df.groupby("Name")["Amount Spent"].sum().reset_index()
+    debt_summary = debt_summary.sort_values("Amount Spent", ascending=False)
     st.write(debt_summary)
 else:
     st.write("No expenses logged yet.")
