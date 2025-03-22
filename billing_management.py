@@ -55,7 +55,7 @@ if not df.empty:
         f"Your debt is so high, even Elon Musk is impressed. Ready to clear it, or should we start crowdfunding your escape?"
     ]
     
-    st.markdown(f"### 💭 Random Debt Wisdom")
+    st.markdown(f"### 📢 Special Announcement for {highest_debtor}")
     st.write(random.choice(debt_messages))
 else:
     st.write("No expenses logged yet.")
