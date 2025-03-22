@@ -4,6 +4,7 @@ from google.oauth2.service_account import Credentials
 import pandas as pd
 from datetime import datetime
 import random
+import plotly.express as px
 
 SHEET_URL = st.secrets["gcp_service_account"]["sheet_url"]
 
@@ -38,7 +39,6 @@ else:
 st.header("📊 Current Debt Summary")
 
 if not df.empty:
-    # Create a pivot table to show debts by both debtor and who they owe
     debt_summary = df.pivot_table(
         values='Amount Spent',
         index='Name',
@@ -47,16 +47,32 @@ if not df.empty:
         fill_value=0
     ).reset_index()
     
-    # Add total column
     debt_summary['Total'] = debt_summary.iloc[:, 1:].sum(axis=1)
-    
-    # Sort by total
-    debt_summary = debt_summary.sort_values('Total', ascending=False)
     
     st.write(debt_summary)
     
-    highest_debtor = debt_summary.iloc[0]["Name"]
-    highest_amount = debt_summary.iloc[0]["Total"]
+    st.markdown("### 📈 Debt Distribution")
+    
+    debt_summary_sorted = debt_summary.sort_values('Total', ascending=True)
+    
+    colors = []
+    for i in range(len(debt_summary_sorted)):
+        intensity = i / len(debt_summary_sorted)
+        color = f'rgb({255}, {192-intensity*192}, {203-intensity*203})'
+        colors.append(color)
+    
+    fig = px.pie(
+        debt_summary_sorted,
+        values='Total',
+        names='Name',
+        title='Total Debt Distribution',
+        color_discrete_sequence=colors
+    )
+    fig.update_layout(height=400)
+    st.plotly_chart(fig, use_container_width=True)
+    
+    highest_debtor = debt_summary.loc[debt_summary['Total'].idxmax()]["Name"]
+    highest_amount = debt_summary['Total'].max()
     
     debt_messages = [
         f"Congratulations, {highest_debtor}! You've won the 'Best at Owing Money' award! Now, pay up before we start charging rent on your debt!",
