@@ -3,6 +3,7 @@ import gspread
 from google.oauth2.service_account import Credentials
 import pandas as pd
 from datetime import datetime
+import random
 
 SHEET_URL = st.secrets["gcp_service_account"]["sheet_url"]
 
@@ -40,6 +41,22 @@ if not df.empty:
     debt_summary = df.groupby("Name")["Amount Spent"].sum().reset_index()
     debt_summary = debt_summary.sort_values("Amount Spent", ascending=False)
     st.write(debt_summary)
+    
+    highest_debtor = debt_summary.iloc[0]["Name"]
+    highest_amount = debt_summary.iloc[0]["Amount Spent"]
+    
+    debt_messages = [
+        f"Congratulations, {highest_debtor}! You've won the 'Best at Owing Money' award! Now, pay up before we start charging rent on your debt!",
+        f"Breaking News: {highest_debtor} has officially been declared the CEO of Debt Inc. We wish them luck in their future bankruptcy!",
+        f"Hey {highest_debtor}, NASA just called—they discovered a new black hole in your wallet! Pay your dues before we all get sucked in!",
+        f"Debt Level: Final Boss Mode. {highest_debtor}, your financial decisions are now a horror story. Pay up before we make a documentary!",
+        f"If money talks, yours has been on silent mode for too long, {highest_debtor}. Time to unmute those payments!",
+        f"{highest_debtor}, you've borrowed so much, we're considering renaming this app after you. '{highest_debtor}'s Debt Tracker' has a nice ring to it, no?",
+        f"Your debt is so high, even Elon Musk is impressed. Ready to clear it, or should we start crowdfunding your escape?"
+    ]
+    
+    st.markdown(f"### 💭 Random Debt Wisdom")
+    st.write(random.choice(debt_messages))
 else:
     st.write("No expenses logged yet.")
 
